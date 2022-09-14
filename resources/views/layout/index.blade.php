@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Laundry</title>
+    <title>Passion Laundry</title>
 
     <!-- Custom fonts for this template-->
     <link href="{{ asset('vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
@@ -91,7 +91,7 @@
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Laundry 2022</span>
+                        <span>Copyright &copy; Passion Laundry 2022</span>
                     </div>
                 </div>
             </footer>

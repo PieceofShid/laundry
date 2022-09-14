@@ -20,6 +20,9 @@
                     <div class="col">
                         <label for="nama">Nama Counter</label>
                         <input type="text" class="form-control" name="nama" id="nama" required>
+                        @error('nama')
+                            <span class="text-danger">{{ $message}}</span>
+                        @enderror
                     </div>
                 </div>
                 <button class="btn btn-primary" type="submit">Submit</button>

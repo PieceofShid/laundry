@@ -15,6 +15,12 @@ class CounterController extends Controller
 
     public function post(Request $request)
     {
+        $request->validate([
+            'nama' => 'required|unique:counters'
+        ],[
+            'nama.unique' => 'Nama sudah terdaftar silahkan ganti nama baru'
+        ]);
+
         try{
             Counter::create([
                 'nama' => $request->nama
