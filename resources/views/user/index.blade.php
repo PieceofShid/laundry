@@ -84,6 +84,10 @@
                                     <label class="custom-control-label" for="input_masuk">Input Masuk</label>
                                 </div>
                                 <div class="custom-control custom-checkbox small">
+                                    <input type="checkbox" class="custom-control-input" name="menu[]" id="input_pending" value="input_pending">
+                                    <label class="custom-control-label" for="input_pending">Input Pending</label>
+                                </div>
+                                <div class="custom-control custom-checkbox small">
                                     <input type="checkbox" class="custom-control-input" name="menu[]" id="input_keluar" value="input_keluar">
                                     <label class="custom-control-label" for="input_keluar">Input Keluar</label>
                                 </div>
@@ -170,6 +174,8 @@
                             $('#input_keluar').attr('checked', true);
                         }else if(data['access'][i]['hak_akses'] == 'daftar_user'){
                             $('#daftar_user').attr('checked', true);
+                        }else if(data['access'][i]['hak_akses'] == 'input_pending'){
+                            $('#input_pending').attr('checked', true);
                         }
                     }
                     $('#userForm').show();

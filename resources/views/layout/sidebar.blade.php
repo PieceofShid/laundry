@@ -27,9 +27,16 @@
                     <span>Input Masuk</span></a>
             </li>
         @endif
+        @if ($menu->hak_akses == 'input_pending')
+            <li class="nav-item  @if(Route::is('laundry.pending')) active @endif">
+                <a class="nav-link" href="{{ route('laundry.pending')}}">
+                    <i class="fas fa-fw fa-chart-area"></i>
+                    <span>Input Pending</span></a>
+            </li>
+        @endif
         @if ($menu->hak_akses == 'input_keluar')
-            <li class="nav-item  @if(Route::is('laundry.edit')) active @endif">
-                <a class="nav-link" href="{{ route('laundry.edit')}}">
+            <li class="nav-item  @if(Route::is('laundry.show')) active @endif">
+                <a class="nav-link" href="{{ route('laundry.show')}}">
                     <i class="fas fa-fw fa-chart-area"></i>
                     <span>Input Keluar</span></a>
             </li>

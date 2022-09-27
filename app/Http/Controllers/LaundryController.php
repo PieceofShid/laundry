@@ -12,8 +12,9 @@ class LaundryController extends Controller
     public function index()
     {
         $laundries = Laundry::all();
+        $counters  = Counter::all();
 
-        return view('laundry.index', compact('laundries'));
+        return view('laundry.index', compact('laundries', 'counters'));
     }
 
     public function create()
@@ -25,6 +26,12 @@ class LaundryController extends Controller
 
     public function post(Request $request)
     {
+        $data = $request->validate([
+            'no_invoice' => 'required|unique:laundries'
+        ],[
+            'no_invoice.unique' => 'Invoice sudah pernah diinput silahkan ganti nomor invoice'
+        ]);
+
         try{
             Laundry::create($request->all());
 
@@ -34,11 +41,66 @@ class LaundryController extends Controller
         }
     }
 
-    public function edit()
+    public function edit($id)
     {
-        $laundries = Laundry::where('status', '!=', 'Y')->get();
+        $laundry = Laundry::find($id);
+        $counters = Counter::all();
 
-        return view('laundry.edit', compact('laundries'));
+        return view('laundry.edit', compact('laundry', 'counters'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        try{
+            Laundry::find($id)->update($request->all());
+
+            return redirect()->back()->with('success', 'Data berhasil diupdate');
+        }catch(Exception $x){
+            return redirect()->back()->with('error', $x->getMessage());
+        }
+    }
+
+    public function pending()
+    {
+        $laundries = Laundry::where('status', 'W')->get();
+
+        return view('laundry.pending', compact('laundries'));
+    }
+
+    public function update_pending(Request $request, $id)
+    {
+        $laundry = Laundry::find($id);
+
+        $pending = $request->jumlah_item_pending;
+        $selesai = $request->jumlah_item_selesai;
+        $sum     = $pending + $selesai;
+        $awal    = $request->jumlah_item;
+        $result  = $awal - $sum;
+        if($result == 0){
+            $status = 'Y';
+        }else{
+            $status = 'W';
+        }
+
+        try{
+            $laundry->update([
+                'tanggal_input_pending' => $request->tanggal_input_pending,
+                'jumlah_item_pending' => $result,
+                'jumlah_item_selesai' => $sum,
+                'status' => $status
+            ]);
+
+            return redirect()->back()->with('success', 'Data berhasil diupdate');
+        }catch(Exception $x){
+            return redirect()->back()->with('error', $x->getMessage());
+        }
+    }
+
+    public function selesai()
+    {
+        $laundries = Laundry::where('status', 'N')->get();
+
+        return view('laundry.selesai', compact('laundries'));
     }
 
     public function select($id)
@@ -48,11 +110,12 @@ class LaundryController extends Controller
         return $laundry;
     }
 
-    public function update(Request $request, $id)
+    public function update_selesai(Request $request, $id)
     {
         $laundry    = Laundry::find($id);
         $item       = $request->jumlah_item;
         $selesai    = $request->jumlah_item_selesai;
+        $pending    = $item - $selesai;
         if($item == $selesai){
             $status = 'Y';
         }elseif($item > $selesai && $selesai > 0){
@@ -66,6 +129,7 @@ class LaundryController extends Controller
                 'tanggal_selesai' => $request->tanggal_selesai,
                 'menggunakan_kartu_spotting' => $request->menggunakan_kartu_spotting,
                 'catatan' => $request->catatan,
+                'jumlah_item_pending' => $pending,
                 'jumlah_item_selesai' => $selesai,
                 'status' => $status
             ]);
@@ -82,21 +146,40 @@ class LaundryController extends Controller
         $to     = $request->sampai;
         $tipe   = $request->tipe;
         if($tipe == 'proses'){
-            $status = 'W';
+            $status = 'N';
         }elseif($tipe == 'keluar'){
             $status = 'Y';
+        }elseif($tipe == 'pending'){
+            $status = 'W';
+        }
+
+        $counter = $request->counter;
+        if($counter == 'semua'){
+            $conn = '!=';
+            $reff = 0;
+        }else{
+            $conn = '=';
+            $reff = $counter;
         }
 
         if($tipe == 'spotting'){
             $laundries = Laundry::whereBetween('tanggal_input', [$from, $to])
-            ->where('menggunakan_kartu_spotting', 'Ya')->get();
+            ->where('counter_id', $conn, $reff)->where('menggunakan_kartu_spotting', 'Ya')->get();
         }elseif($tipe == 'masuk'){
-            $laundries = Laundry::whereBetween('tanggal_input', [$from, $to])->get();
+            $laundries = Laundry::whereBetween('tanggal_input', [$from, $to])
+            ->where('counter_id', $conn, $reff)->get();
         }else{
             $laundries = Laundry::whereBetween('tanggal_input', [$from, $to])
-            ->where('status', $status)->get();
+            ->where('counter_id', $conn, $reff)->where('status', $status)->get();
         }
 
-        return view('laundry.download', compact('laundries', 'tipe'));
+        return view('laundry.download', compact('laundries', 'tipe', 'from', 'to'));
+    }
+
+    public function delete($id)
+    {
+        Laundry::find($id)->delete();
+
+        return redirect()->back()->with('success', 'Data berhasil dihapus');
     }
 }

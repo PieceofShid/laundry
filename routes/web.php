@@ -34,10 +34,15 @@ Route::middleware('auth')->group(function(){
         Route::get('/', [LaundryController::class, 'index'])->name('laundry.index');
         Route::get('/create', [LaundryController::class, 'create'])->name('laundry.create');
         Route::post('/create', [LaundryController::class, 'post'])->name('laundry.post');
-        Route::get('/edit', [LaundryController::class, 'edit'])->name('laundry.edit');
-        Route::get('/{id}/select', [LaundryController::class, 'select'])->name('laundry.select');
+        Route::get('/{id}/edit', [LaundryController::class, 'edit'])->name('laundry.edit');
         Route::post('/{id}/update', [LaundryController::class, 'update'])->name('laundry.update');
-        Route::post('/laporan', [LaundryController::class, 'laporan'])->name('laundry.laporan');
+        Route::get('/selesai', [LaundryController::class, 'selesai'])->name('laundry.show');
+        Route::get('/{id}/select', [LaundryController::class, 'select'])->name('laundry.select');
+        Route::get('/pending', [LaundryController::class, 'pending'])->name('laundry.pending');
+        Route::post('/{id}/pending', [LaundryController::class, 'update_pending'])->name('laundry.pending.post');
+        Route::post('/{id}/selesai', [LaundryController::class, 'update_selesai'])->name('laundry.selesai');
+        Route::get('/laporan', [LaundryController::class, 'laporan'])->name('laundry.laporan');
+        Route::delete('/{id}/hapus', [LaundryController::class, 'delete'])->name('laundry.hapus');
     });
 
     // route counter

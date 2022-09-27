@@ -10,7 +10,7 @@
                 if(session('success')){
                     echo '<div class="alert alert-success">'.session('success').'</div>';
                 }elseif(session('error')){
-                    echo '<div class="alert alert-error">'.session('error').'</div>';
+                    echo '<div class="alert alert-danger">'.session('error').'</div>';
                 }
             @endphp
             <form action="{{ route('laundry.post')}}" method="post">
@@ -20,7 +20,7 @@
                     <div class="col">
                         <label for="counter_id">Nama Counter</label>
                         <select class="form-control" name="counter_id" id="counter_id" required>
-                            <option value="">-- Pilih Counter --</option>
+                            <option></option>
                             @foreach ($counters as $counter)
                                 <option value="{{ $counter->id}}">{{ $counter->nama}}</option>
                             @endforeach
@@ -29,6 +29,9 @@
                     <div class="col">
                         <label for="no_invoice">No. Invoice</label>
                         <input type="text" class="form-control" name="no_invoice" id="no_invoice" maxlength="9" required>
+                        @error('no_invoice')
+                            <span class="text-danger">{{ $message}}</span>
+                        @enderror
                     </div>
                 </div>
                 <div class="form-group row">
@@ -38,13 +41,13 @@
                     </div>
                     <div class="col">
                         <label for="jumlah_item">Jumlah Item</label>
-                        <input type="number" class="form-control" name="jumlah_item" id="jumlah_item">
+                        <input type="number" class="form-control" name="jumlah_item" id="jumlah_item" required>
                     </div>
                 </div>
                 <div class="form-group row">
                     <div class="col">
                         <label for="total">Total Rp</label>
-                        <input type="number" class="form-control" name="total" id="total">
+                        <input type="number" class="form-control" name="total" id="total" required>
                     </div>
                     <div class="col">
                         <label for="keterangan">Keterangan</label>
@@ -58,4 +61,18 @@
             </form>
         </div>
     </div>
+@endsection
+
+@section('script')
+    <script>
+        $(document).ready(function(){
+            $('#counter_id').select2({
+                placeholder: 'Pilih Counter'
+            })
+        })
+
+        $(document).on('select2:open', () => {
+            document.querySelector('.select2-search__field').focus();
+        });
+    </script>
 @endsection
