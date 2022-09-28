@@ -15,7 +15,7 @@
             @endphp
         </div>
         <div class="card-body">
-            <form action="" method="post" id="form">
+            <form action="{{ route('laundry.selesai', $laundry->id)}}" method="post" id="form">
             @csrf
             @method('post')
                 <div class="form-group row">
