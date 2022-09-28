@@ -58,7 +58,13 @@
                                     @endif
                                 </td>
                                 <td>
-                                    <a href="{{ route('laundry.edit', $laundry->id)}}" class="btn btn-sm btn-warning"><i class="fa fa-pen"></i></a>
+                                    @if ($laundry->status == 'N')
+                                        <a href="{{ route('laundry.edit', $laundry->id)}}" class="btn btn-sm btn-warning"><i class="fa fa-pen"></i></a>
+                                    @elseif ($laundry->status == 'W')
+                                        <a href="{{ route('laundry.edit.pending', $laundry->id)}}" class="btn btn-sm btn-warning"><i class="fa fa-pen"></i></a>
+                                    @elseif ($laundry->status == 'Y')
+                                        <a href="{{ route('laundry.edit.selesai', $laundry->id)}}" class="btn btn-sm btn-warning"><i class="fa fa-pen"></i></a> 
+                                    @endif
                                     <button type="button" class="btn btn-sm btn-danger" onclick="hapus('{{ $laundry->id}}')"><i class="fa fa-trash"></i></button>
                                 </td>
                             </tr>

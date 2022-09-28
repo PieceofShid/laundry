@@ -85,7 +85,7 @@
                                 </div>
                                 <div class="custom-control custom-checkbox small">
                                     <input type="checkbox" class="custom-control-input" name="menu[]" id="input_pending" value="input_pending">
-                                    <label class="custom-control-label" for="input_pending">Input Pending</label>
+                                    <label class="custom-control-label" for="input_pending">Input Sisa</label>
                                 </div>
                                 <div class="custom-control custom-checkbox small">
                                     <input type="checkbox" class="custom-control-input" name="menu[]" id="input_keluar" value="input_keluar">

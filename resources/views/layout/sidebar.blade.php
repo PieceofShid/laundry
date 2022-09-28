@@ -31,7 +31,7 @@
             <li class="nav-item  @if(Route::is('laundry.pending')) active @endif">
                 <a class="nav-link" href="{{ route('laundry.pending')}}">
                     <i class="fas fa-fw fa-chart-area"></i>
-                    <span>Input Pending</span></a>
+                    <span>Input Sisa</span></a>
             </li>
         @endif
         @if ($menu->hak_akses == 'input_keluar')

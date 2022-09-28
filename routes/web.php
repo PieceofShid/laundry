@@ -39,7 +39,9 @@ Route::middleware('auth')->group(function(){
         Route::get('/selesai', [LaundryController::class, 'selesai'])->name('laundry.show');
         Route::get('/{id}/select', [LaundryController::class, 'select'])->name('laundry.select');
         Route::get('/pending', [LaundryController::class, 'pending'])->name('laundry.pending');
+        Route::get('/{id}/pending', [LaundryController::class, 'edit_pending'])->name('laundry.edit.pending');
         Route::post('/{id}/pending', [LaundryController::class, 'update_pending'])->name('laundry.pending.post');
+        Route::get('/{id}/selesai', [LaundryController::class, 'edit_selesai'])->name('laundry.edit.selesai');
         Route::post('/{id}/selesai', [LaundryController::class, 'update_selesai'])->name('laundry.selesai');
         Route::get('/laporan', [LaundryController::class, 'laporan'])->name('laundry.laporan');
         Route::delete('/{id}/hapus', [LaundryController::class, 'delete'])->name('laundry.hapus');

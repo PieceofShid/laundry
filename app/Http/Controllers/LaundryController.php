@@ -67,6 +67,13 @@ class LaundryController extends Controller
         return view('laundry.pending', compact('laundries'));
     }
 
+    public function edit_pending($id)
+    {
+        $laundry = Laundry::find($id);
+
+        return view('laundry.pending_edit', compact('laundry'));
+    }
+
     public function update_pending(Request $request, $id)
     {
         $laundry = Laundry::find($id);
@@ -101,6 +108,13 @@ class LaundryController extends Controller
         $laundries = Laundry::where('status', 'N')->get();
 
         return view('laundry.selesai', compact('laundries'));
+    }
+
+    public function edit_selesai($id)
+    {
+        $laundry = Laundry::find($id);
+
+        return view('laundry.selesai_edit', compact('laundry'));
     }
 
     public function select($id)
