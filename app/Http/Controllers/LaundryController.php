@@ -26,14 +26,13 @@ class LaundryController extends Controller
 
     public function post(Request $request)
     {
-        $data = $request->validate([
-            'no_invoice' => 'required|unique:laundries'
-        ],[
-            'no_invoice.unique' => 'Invoice sudah pernah diinput silahkan ganti nomor invoice'
-        ]);
-
         try{
-            Laundry::create($request->all());
+            $check = Laundry::where('no_invoice', $request->no_invoice)->get();
+            if(count($check)){
+                return redirect()->back()->with('invoice', 'Invoice sudah pernah diinput silahkan ganti nomor invoice');
+            }else{
+                Laundry::create($request->all());   
+            }
 
             return redirect()->back()->with('success', 'Data berhasil ditambah');
         }catch(Exception $x){

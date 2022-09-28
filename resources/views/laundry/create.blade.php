@@ -29,9 +29,11 @@
                     <div class="col">
                         <label for="no_invoice">No. Invoice</label>
                         <input type="text" class="form-control" name="no_invoice" id="no_invoice" maxlength="9" required>
-                        @error('no_invoice')
-                            <span class="text-danger">{{ $message}}</span>
-                        @enderror
+                        @php
+                            if(session('invoice')){
+                                echo '<span class="text-danger">'.session('invoice').'</span>';
+                            }
+                        @endphp
                     </div>
                 </div>
                 <div class="form-group row">
